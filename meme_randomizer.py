@@ -18,17 +18,17 @@ CATEGORIES = {
     "Deutsche Sprache": r"memes\Deutsche Sprache"}
 
 # GUI erstellen
-root = tk.Tk()                   # erstellt das Hauptfenster der Tkinter-Anwendung
-root.title("Meme Randomizer")    # gibt dem Fenster einen Titel
+root = tk.Tk()                      # erstellt das Hauptfenster der Tkinter-Anwendung
+root.title("Meme Randomizer")       # gibt dem Fenster einen Titel
 
 # Suchfeld zur GUI hinzufügen
-search_var = tk.StringVar()     # Variable für den Suchbegriff
+search_var = tk.StringVar()                             # Variable für den Suchbegriff
 
 search_entry = tk.Entry(root, textvariable=search_var)  # Eingabefeld im Hauptfenster root erstellen und Ergebnis in Variable speichern
 search_entry.pack()                                     # und einbetten
 
 search_button = tk.Button(root, text="🔍 Suchen", command=lambda: search_memes(search_var.get()))   # Suchbutton erstellen
-search_button.pack()                                                                                # und einbetten
+search_button.pack()                                                                                 # und einbetten
 
 # Funktion die ein Meme zufällig auswählt
 def show_random_meme(category, subcategory=None):     
@@ -37,24 +37,24 @@ def show_random_meme(category, subcategory=None):
     else:
         folder = CATEGORIES[category]
 
-    memes = os.listdir(folder)      # listet alle Dateien des gewählten Ordners auf
+    memes = os.listdir(folder)                      # listet alle Dateien des gewählten Ordners auf
     
-    if not memes:       # falls kein Meme gefunden wurde 
+    if not memes:                                   # falls kein Meme gefunden wurde 
         meme_label.config(text="Keine Memes gefunden", image="")
         return
     
-    random_meme = random.choice(memes)  # wählt zufällig ein Meme aus
+    random_meme = random.choice(memes)              # wählt zufällig ein Meme aus
     meme_path = os.path.join(folder, random_meme)   # kombiniert den Ordnerpfad mit dem ausgewählten Meme, um den vollständigen Dateipfad zu erhalten
 
-    img = Image.open(meme_path) # öffnet das zufällig ausgewählte Meme
-    img = img.resize((500,500)) # Größe anpassen 500x500 Pixel
-    img = ImageTk.PhotoImage(img) # wandelt in ein Tkinter Format um
+    img = Image.open(meme_path)                     # öffnet das zufällig ausgewählte Meme
+    img = img.resize((500,500))                     # Größe anpassen 500x500 Pixel
+    img = ImageTk.PhotoImage(img)                   # wandelt in ein Tkinter Format um
 
-    meme_label.config(image=img)    # Tkinter Widget zur Bilddarstellung
-    meme_label.image = img          # Referenz speichern
+    meme_label.config(image=img)                    # Tkinter Widget zur Bilddarstellung
+    meme_label.image = img                          # Referenz speichern
 
     for widget in frame.winfo_children():
-        widget.destroy()                    # vorherige Buttons entfernen
+        widget.destroy()                            # vorherige Buttons entfernen
 
     back_btn = tk.Button(frame, text="← Zurück", command= show_categories)  # definiert den Zurück-Button
     back_btn.pack(side=tk.LEFT, padx=10, pady=5)   # bettet den Button im Tkinter-Fenster ein, mit automatischer Skallierung des Buttons; Abstand zu anderen Objekten 10 Pixel horizontal und 5 Pixel vertikal
@@ -66,76 +66,80 @@ def show_categories():
 
     meme_label.config(image="",text="")     # Meme Label leeren, falls vorher ein Bild angezeigt wurde wird es hier entfernt
 
-    for category in CATEGORIES:             # iteriert durch die Hauptkategorien
+    for category in CATEGORIES:                                                                         # iteriert durch die Hauptkategorien
         if isinstance(CATEGORIES[category],dict):
-            btn = tk.Button(frame, text=category, command=lambda c=category: show_subcategories(c)) # mit Klick auf eine Hauptkategorie wird die Unterkategorie aufgerufen, falls vorhanden
+            btn = tk.Button(frame, text=category, command=lambda c=category: show_subcategories(c))     # mit Klick auf eine Hauptkategorie wird die Unterkategorie aufgerufen, falls vorhanden
         else:
             btn = tk.Button(frame, text=category, command=lambda c=category:show_random_meme(c, None))  # ansonsten wird die Funktion show_random_meme ausgeführt
         
-        btn.pack(side=tk.LEFT, padx=10, pady=5) # bettet den Button im Hauptfenster ein
+        btn.pack(side=tk.LEFT, padx=10, pady=5)                                                         # bettet den Button im Hauptfenster ein
 
 # Funktion die nur die Unterkategorien umfasst
 def show_subcategories(category):
     for widget in frame.winfo_children():   # gibt eine Liste aller Widgets
         widget.destroy()                    # entfernt alle bisherigen Elemente
 
-    for subcategory in CATEGORIES[category]:    # iteriert durch alle Unterkategorien der gewählten Hauptkategorie
-        btn = tk.Button(frame, text=subcategory, command=lambda c=category, s=subcategory: show_random_meme(c, s)) # definiert die Buttons der Unterkategorien und führt dan show_random_meme aus
-        btn.pack(side=tk.LEFT, padx=10, pady=5) # bettet den Button im Hauptfenster ein
+    for subcategory in CATEGORIES[category]:                                                                        # iteriert durch alle Unterkategorien der gewählten Hauptkategorie
+        btn = tk.Button(frame, text=subcategory, command=lambda c=category, s=subcategory: show_random_meme(c, s))  # definiert die Buttons der Unterkategorien und führt dan show_random_meme aus
+        btn.pack(side=tk.LEFT, padx=10, pady=5)                                                                     # bettet den Button im Hauptfenster ein
 
     back_btn = tk.Button(frame, text="← Zurück", command= show_categories)  # definiert wieder einen Zurück-Button
-    back_btn.pack(side=tk.LEFT, padx=10, pady=5) # bettet den Button ein
+    back_btn.pack(side=tk.LEFT, padx=10, pady=5)                            # bettet den Button ein
 
 # Suchfunktion
 def search_memes(query):
     query = query.lower()   # alles klein schreiben um Suche zu vereinfachen
     results = []            # Leere Liste für die Dateipfade der Suchergebnisse
 
-    for category, value in CATEGORIES.items():      # iteriert durch alle Kategorien und Unterkategorien
-        if isinstance(value, dict):                 # falls es Unterkategorien gibt (value=dict)
-            for subcategory, path in value.items(): 
-                if os.path.exists(path):            # prüft ob der Ordner existiert
-                    for filename in os.listdir(path):   # geht alle Dateien im Ordner durch und sucht nach Übereinstimmungen
-                        if query in filename.lower():
-                            results.append(os.path.join(path, filename))
-        else:                                       # falls es keine Unterkategorie gibt
+    for category, value in CATEGORIES.items():                              # iteriert durch alle Kategorien und Unterkategorien
+        if isinstance(value, dict):                                         # falls es Unterkategorien gibt (value=dict)
+            for subcategory, path in value.items():                         # iteriert durch alle Bilder der Unterkategorie
+                if os.path.exists(path):                                    # prüft ob der Ordner existiert
+                    for filename in os.listdir(path):                       # geht alle Dateien im Ordner durch und sucht nach Übereinstimmungen
+                        if query in filename.lower():                       # falls der Dateiname den Suchbegriff enthält
+                            results.append(os.path.join(path, filename))    # wird der Pfad der Liste results hinzugefügt
+        else:                                                               # falls es keine Unterkategorie gibt
                 if os.path.exists(value):
                     for filename in os.listdir(value):
                         if query in filename.lower():
                             results.append(os.path.join(value, filename))
     
-    if not results:     # falls nichts gefunden wurde
+    if not results:                                                         # falls nichts gefunden wurde
         meme_label.config(text="Keine Ergebnisse gefunden", image="")
         return
     
-    for widget in frame.winfo_children():
+    for widget in frame.winfo_children():                                   # löscht alle bisherigen Buttons im frame, damit nur die neuen Suchergebnisse angezeigt werden
         widget.destroy()
 
-    for meme_path in results:
-        btn = tk.Button(frame, text=os.path.basename(meme_path),
+    for meme_path in results:                                               # iteriert durch alle gefundenen Ergebnisse
+        btn = tk.Button(frame, text=os.path.basename(meme_path),            # und erstellt einen Button der dann bei Klick das jeweilige Meme anzeigt
                         command=lambda path=meme_path: show_meme(path))
-        btn.pack()
+        btn.pack()                                                          # bettet die Buttons ins Fenster ein
     
-    back_btn = tk.Button(frame, text="← Zurück", command=show_categories)
+    back_btn = tk.Button(frame, text="← Zurück", command=show_categories)   # erstellt den Zurück-Button
     back_btn.pack()
 
-# Meme direkt anzeigen mit Pfad oder für die Suchfunktion
+# Meme öffnen für die Suchfunktion
 def show_meme(meme_path):
-    img = Image.open(meme_path)
-    img = img.resize((500,500))
-    img = ImageTk.PhotoImage(img)
+    if not os.path.exists(meme_path): # falls die Datei nicht mehr exestiert
+        meme_label.config(text="Fehler: Datei nicht gefunden", image="")
+        return
+    
+    img = Image.open(meme_path)     # öffnet das Bild
+    img = img.resize((500,500))     # passt die Größe an
+    img = ImageTk.PhotoImage(img)   # wandelt in Tkinter-Format um
 
-    meme_label.config(image=img)
-    meme_label.image = img
+    meme_label.config(image=img)    # Tkinter Widget zur Bildverarbeitung
+    meme_label.image = img          # Referenz speichern
 
 # Frame-Widget erstellen
-frame = tk.Frame(root)          # erstellt ein Frame-Widget im Hauptfenster, das als Container für die Buttons dient
-frame.pack()                    # bettet das Frame in das Fenster ein
+frame = tk.Frame(root)              # erstellt ein Frame-Widget im Hauptfenster, das als Container für die Buttons dient
+frame.pack()                        # bettet das Frame in das Fenster ein
 
 # Label für das Bild
-meme_label = tk.Label(root) # Erstellung eines Label-Widgets im Hauptfenster, wo das Meme drauf plaziert wird
-meme_label.pack()   # bettet das Label in der Benutzeroberfläche ein
+meme_label = tk.Label(root)         # Erstellung eines Label-Widgets im Hauptfenster, wo das Meme drauf plaziert wird
+meme_label.pack()                   # bettet das Label in der Benutzeroberfläche ein
 
 show_categories()
 
-root.mainloop() # startet die Tkinter-Anwendung, Fenster bleibt geöffnet und reagiert auf Benutzerinteraktionen
+root.mainloop()                     # startet die Tkinter-Anwendung, Fenster bleibt geöffnet und reagiert auf Benutzerinteraktionen
