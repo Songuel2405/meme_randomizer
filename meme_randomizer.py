@@ -46,4 +46,4 @@ meme_label = tk.Label(root) # Erstellung eines Label-Widgets im Hauptfenster, wo
 meme_label.pack()   # bettet das Label in der Benutzeroberfläche ein
 
 root.mainloop() # startet die Tkinter-Anwendung, Fenster bleibt geöffnet und reagiert auf Benutzerinteraktionen
-laura = "projekt"
+
