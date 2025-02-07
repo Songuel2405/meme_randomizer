@@ -11,9 +11,7 @@ CATEGORIES = {
      "Katzen": r"memes\Tiere\Katzen",
      "Wildtiere": r"memes\Tiere\Wildtiere",
      "Meerestiere":r"memes\Tiere\Meerestiere",},
-    "Gaming": {"Minecraft":r"memes\Gaming\Minecraft",
-               "Zelda":r"memes\Gaming\Zelda",
-               },
+    "Gaming": r"memes\Gaming",
     "IT": r"memes\IT",
     "Deutsche Sprache": r"memes\Deutsche Sprache"}
 
