@@ -22,7 +22,9 @@ CATEGORIES = {
       "Verwirrt": r"memes\Emotionen\Verwirrt"},
     "Gaming": r"memes\Gaming",
     "IT": r"memes\IT",
-    "Deutsch": r"memes\Deutsch"}
+    "Deutsch": r"memes\Deutsch",
+    "Kochen": r"memes\Kochen",
+    "Musik": r"memes\Musik"}
 
 # GUI erstellen
 root = tk.Tk()                      # erstellt das Hauptfenster der Tkinter-Anwendung
