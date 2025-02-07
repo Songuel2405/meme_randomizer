@@ -9,8 +9,13 @@ CATEGORIES = {
     "Tiere": 
     {"Hunde": r"memes\Tiere\Hunde",
      "Katzen": r"memes\Tiere\Katzen",
+     "Hund+Katze": r"memes\Tiere\Hund+Katze",
+     "Katze+Maus": r"memes\Tiere\Katze+Maus",
+     "Elefant": r"memes\Tiere\Elefant",
+     "Maus": r"memes\Tiere\Maus",
      "Wildtiere": r"memes\Tiere\Wildtiere",
-     "Meerestiere":r"memes\Tiere\Meerestiere",},
+     "Meerestiere":r"memes\Tiere\Meerestiere",
+     "Vögel": r"memes\Tiere\Vögel"},
      "Emotionen": 
      {"Glücklich": r"memes\Emotionen\Glücklich",
       "Traurig": r"memes\Emotionen\Traurig",
