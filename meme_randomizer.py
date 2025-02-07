@@ -143,7 +143,7 @@ def show_meme(meme_path):
     meme_label.image = img          # Referenz speichern
 
 # Frame-Widget erstellen
-frame = tk.Frame(root, background= "grey25")              # erstellt ein Frame-Widget im Hauptfenster, das als Container für die Buttons dient
+frame = tk.Frame(root, background= "grey25")    # erstellt ein Frame-Widget im Hauptfenster mit grauem Hintergrund, das als Container für die Buttons dient
 frame.pack()                        # bettet das Frame in das Fenster ein
 
 # Label für das Bild
