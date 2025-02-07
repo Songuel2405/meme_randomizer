@@ -11,9 +11,13 @@ CATEGORIES = {
      "Katzen": r"memes\Tiere\Katzen",
      "Wildtiere": r"memes\Tiere\Wildtiere",
      "Meerestiere":r"memes\Tiere\Meerestiere",},
+     "Emotionen": 
+     {"Glücklich": r"memes\Emotionen\Glücklich",
+      "Traurig": r"memes\Emotionen\Traurig",
+      "Verwirrt": r"memes\Emotionen\Verwirrt"},
     "Gaming": r"memes\Gaming",
     "IT": r"memes\IT",
-    "Deutsche Sprache": r"memes\Deutsche Sprache"}
+    "Deutsch": r"memes\Deutsch"}
 
 # GUI erstellen
 root = tk.Tk()                      # erstellt das Hauptfenster der Tkinter-Anwendung
