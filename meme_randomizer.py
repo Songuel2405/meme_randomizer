@@ -22,6 +22,7 @@ CATEGORIES = {
 # GUI erstellen
 root = tk.Tk()                      # erstellt das Hauptfenster der Tkinter-Anwendung
 root.title("Meme Randomizer")       # gibt dem Fenster einen Titel
+root.configure(bg="grey25")
 
 # Suchfeld zur GUI hinzufügen
 search_var = tk.StringVar()                             # Variable für den Suchbegriff
@@ -135,7 +136,7 @@ def show_meme(meme_path):
     meme_label.image = img          # Referenz speichern
 
 # Frame-Widget erstellen
-frame = tk.Frame(root)              # erstellt ein Frame-Widget im Hauptfenster, das als Container für die Buttons dient
+frame = tk.Frame(root, background= "grey25")              # erstellt ein Frame-Widget im Hauptfenster, das als Container für die Buttons dient
 frame.pack()                        # bettet das Frame in das Fenster ein
 
 # Label für das Bild
