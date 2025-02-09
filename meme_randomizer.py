@@ -22,7 +22,9 @@ CATEGORIES = {
       "Verwirrt": r"memes\Emotionen\Verwirrt"},
     "Gaming": r"memes\Gaming",
     "IT": r"memes\IT",
-    "Deutsch": r"memes\Deutsch"}
+    "Deutsch": r"memes\Deutsch",
+    "Kochen": r"memes\Kochen",
+    "Musik": r"memes\Musik"}
 
 # GUI erstellen
 root = tk.Tk()                      # erstellt das Hauptfenster der Tkinter-Anwendung
@@ -32,11 +34,12 @@ root.configure(bg="grey25")
 # Suchfeld zur GUI hinzufügen
 search_var = tk.StringVar()                             # Variable für den Suchbegriff
 
-search_entry = tk.Entry(root, textvariable=search_var)  # Eingabefeld im Hauptfenster root erstellen und Ergebnis in Variable speichern
-search_entry.pack()                                     # und einbetten
+search_entry = tk.Entry(root, textvariable=search_var, font=("Alasassy Caps", 12))  # Eingabefeld im Hauptfenster root erstellen und Ergebnis in Variable speichern
+search_entry.pack(pady=10)  # Abstand zur Leserlichkeit                                   # und einbetten
 
-search_button = tk.Button(root, text="🔍 Suchen", command=lambda: search_memes(search_var.get()))   # Suchbutton erstellen
-search_button.pack()                                                                                 # und einbetten
+search_button = tk.Button(root, text="🔍 Suchen", font=("Alasassy Caps", 12), 
+                          fg="white", bg="grey20",  command=lambda: search_memes(search_var.get()))   # Suchbutton erstellen
+search_button.pack() # und einbetten
 
 # Funktion die ein Meme zufällig auswählt
 def show_random_meme(category, subcategory=None):     
@@ -64,7 +67,7 @@ def show_random_meme(category, subcategory=None):
     for widget in frame.winfo_children():
         widget.destroy()                            # vorherige Buttons entfernen
 
-    back_btn = tk.Button(frame, text="← Zurück", command= show_categories)  # definiert den Zurück-Button
+    back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command= show_categories)  # definiert den Zurück-Button
     back_btn.pack(side=tk.LEFT, padx=10, pady=5)   # bettet den Button im Tkinter-Fenster ein, mit automatischer Skallierung des Buttons; Abstand zu anderen Objekten 10 Pixel horizontal und 5 Pixel vertikal
 
 # Funktion die alle Kategorien umfasst
@@ -76,11 +79,11 @@ def show_categories():
 
     for category in CATEGORIES:                                                                         # iteriert durch die Hauptkategorien
         if isinstance(CATEGORIES[category],dict):
-            btn = tk.Button(frame, text=category, command=lambda c=category: show_subcategories(c))     # mit Klick auf eine Hauptkategorie wird die Unterkategorie aufgerufen, falls vorhanden
+            btn = tk.Button(frame, text=category, font=("Alasassy Caps", 12), fg="white", bg="grey20", command=lambda c=category: show_subcategories(c))     # mit Klick auf eine Hauptkategorie wird die Unterkategorie aufgerufen, falls vorhanden
         else:
-            btn = tk.Button(frame, text=category, command=lambda c=category:show_random_meme(c, None))  # ansonsten wird die Funktion show_random_meme ausgeführt
+            btn = tk.Button(frame, text=category, font=("Alasassy Caps", 12), fg="white", bg="grey20", command=lambda c=category:show_random_meme(c, None))  # ansonsten wird die Funktion show_random_meme ausgeführt
         
-        btn.pack(side=tk.LEFT, padx=10, pady=5)                                                         # bettet den Button im Hauptfenster ein
+        btn.pack(side=tk.LEFT, padx=10, pady=5) # bettet den Button im Hauptfenster ein
 
 # Funktion die nur die Unterkategorien umfasst
 def show_subcategories(category):
@@ -88,10 +91,10 @@ def show_subcategories(category):
         widget.destroy()                    # entfernt alle bisherigen Elemente
 
     for subcategory in CATEGORIES[category]:                                                                        # iteriert durch alle Unterkategorien der gewählten Hauptkategorie
-        btn = tk.Button(frame, text=subcategory, command=lambda c=category, s=subcategory: show_random_meme(c, s))  # definiert die Buttons der Unterkategorien und führt dan show_random_meme aus
+        btn = tk.Button(frame, text=subcategory, font=("Alasassy Caps", 12), fg="white", bg="grey20", command=lambda c=category, s=subcategory: show_random_meme(c, s))  # definiert die Buttons der Unterkategorien und führt dan show_random_meme aus
         btn.pack(side=tk.LEFT, padx=10, pady=5)                                                                     # bettet den Button im Hauptfenster ein
 
-    back_btn = tk.Button(frame, text="← Zurück", command= show_categories)  # definiert wieder einen Zurück-Button
+    back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command= show_categories)  # definiert wieder einen Zurück-Button
     back_btn.pack(side=tk.LEFT, padx=10, pady=5)                            # bettet den Button ein
 
 # Suchfunktion
@@ -120,11 +123,11 @@ def search_memes(query):
         widget.destroy()
 
     for meme_path in results:                                               # iteriert durch alle gefundenen Ergebnisse
-        btn = tk.Button(frame, text=os.path.basename(meme_path),            # und erstellt einen Button der dann bei Klick das jeweilige Meme anzeigt
+        btn = tk.Button(frame, text=os.path.basename(meme_path), font=("Alasassy Caps", 12), fg="white", bg="grey20",           # und erstellt einen Button der dann bei Klick das jeweilige Meme anzeigt
                         command=lambda path=meme_path: show_meme(path))
         btn.pack()                                                          # bettet die Buttons ins Fenster ein
     
-    back_btn = tk.Button(frame, text="← Zurück", command=show_categories)   # erstellt den Zurück-Button
+    back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command=show_categories)   # erstellt den Zurück-Button
     back_btn.pack()
 
 # Meme öffnen für die Suchfunktion
@@ -141,7 +144,7 @@ def show_meme(meme_path):
     meme_label.image = img          # Referenz speichern
 
 # Frame-Widget erstellen
-frame = tk.Frame(root, background= "grey25")              # erstellt ein Frame-Widget im Hauptfenster, das als Container für die Buttons dient
+frame = tk.Frame(root, background= "grey25")    # erstellt ein Frame-Widget im Hauptfenster mit grauem Hintergrund, das als Container für die Buttons dient
 frame.pack()                        # bettet das Frame in das Fenster ein
 
 # Label für das Bild
