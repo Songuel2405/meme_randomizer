@@ -31,17 +31,19 @@ CATEGORIES = {
 
 # Meme-Randomizer starten
 def start_meme_randomizer():
+    start_window.configure(bg="grey25")
     start_window.destroy()
 
     global root                                         
-    root = tk.Tk()                                      # Hauptfenster
+    root = tk.Tk()
+    root.geometry("800x600")                                      # Hauptfenster
     root.title("Meme Randomizer")                       # gibt dem Fenster einen Titel
     root.configure(bg="grey25")                         # grauer Hintergrund
 
     def show_categories():
         for widget in frame.winfo_children():
             widget.destroy()                            # entfernt die bestehenden Widgets
-        meme_label.config(image="", text="")            # löscht Bild und Text im Labek
+        meme_label.config(image="", text="")            # löscht Bild und Text im Label
 
         for category in CATEGORIES:
             if isinstance(CATEGORIES[category], dict):
@@ -54,14 +56,15 @@ def start_meme_randomizer():
         for widget in frame.winfo_children():
             widget.destroy()                            # entfernt bestehende Widgets
         for subcategory in CATEGORIES[category]:        # iteriert durch die Unterkategorrien
-            btn = tk.Button(frame, text=subcategory, font=("Alasassy Caps", 12), bg="gray25", command=lambda c=category, s=subcategory: show_random_meme(c, s))
+            btn = tk.Button(frame, text=subcategory, font=("Alasassy Caps", 12), fg= "white", bg="gray25", command=lambda c=category, s=subcategory: show_random_meme(c, s))
             btn.pack(side=tk.LEFT, padx=10, pady=5)     # bettet den Button für die Unterkategorien ein
 
-        back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command= show_categories)  # definiert den Zurück-Button
+        back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey25", command= show_categories)  # definiert den Zurück-Button
         back_btn.pack(side=tk.LEFT, padx=10, pady=5)   # bettet den Button im Tkinter-Fenster ein, mit automatischer Skallierung des Buttons; Abstand zu anderen Objekten 10 Pixel horizontal und 5 Pixel vertikal
     
     # Frame-Widget mit Scroll-Leiste erstellen
     canvas = tk.Canvas(root)
+    canvas.configure(bg="grey25")
     scrollbar = tk.Scrollbar(root,orient="vertical", command=canvas.yview)
     frame = tk.Frame(canvas, background= "grey25")    # erstellt ein Frame-Widget im Hauptfenster mit grauem Hintergrund, das als Container für die Buttons dient
     frame.pack()                        # bettet das Frame in das Fenster ein
@@ -78,7 +81,7 @@ def start_meme_randomizer():
     search_entry.pack(pady=10)  # Abstand zur Leserlichkeit                                   # und einbetten
 
     search_button = tk.Button(root, text="🔍 Suchen", font=("Alasassy Caps", 12), 
-                          fg="white", bg="grey20",  command=lambda: search_memes(search_var.get()))   # Suchbutton erstellen
+                          fg="white", bg="grey25",  command=lambda: search_memes(search_var.get()))   # Suchbutton erstellen
     search_button.pack() # und einbetten
 
     # Suchfunktion
@@ -107,7 +110,7 @@ def start_meme_randomizer():
             widget.destroy()
 
         for meme_path in results:                                               # iteriert durch alle gefundenen Ergebnisse
-            btn = tk.Button(frame, text=os.path.basename(meme_path), font=("Alasassy Caps", 12), fg="white", bg="grey20",           # und erstellt einen Button der dann bei Klick das jeweilige Meme anzeigt
+            btn = tk.Button(frame, text=os.path.basename(meme_path), font=("Alasassy Caps", 12), fg="white", bg="grey25",           # und erstellt einen Button der dann bei Klick das jeweilige Meme anzeigt
                         command=lambda path=meme_path: show_meme(path))
             btn.pack()                                                          # bettet die Buttons ins Fenster ein
     
@@ -150,10 +153,10 @@ def start_meme_randomizer():
         for widget in frame.winfo_children():
             widget.destroy()                            # vorherige Buttons entfernen
 
-        back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command= show_categories)  # definiert den Zurück-Button
+        back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey25", command= show_categories)  # definiert den Zurück-Button
         back_btn.pack(side=tk.LEFT, padx=10, pady=5)   # bettet den Button im Tkinter-Fenster ein, mit automatischer Skallierung des Buttons; Abstand zu anderen Objekten 10 Pixel horizontal und 5 Pixel vertikal
 
-    back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command=show_categories)   # erstellt den Zurück-Button
+    back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey25", command=show_categories)   # erstellt den Zurück-Button
     back_btn.pack()
     # Label für das Bild
     meme_label = tk.Label(root)         # Erstellung eines Label-Widgets im Hauptfenster, wo das Meme drauf plaziert wird
@@ -167,11 +170,12 @@ def start_meme_randomizer():
 start_window = tk.Tk()
 start_window.title("Meme-Startmenü")
 start_window.geometry("400x300")
+start_window.configure(bg="grey25")
 
-label = tk.Label(start_window, text="Willkommen! Wähle eine Option:",font=("Alasassy Caps", 14))
+label = tk.Label(start_window, text="Meme Master",font=("Goudy Stout", 14,),fg="white", bg= "grey25")
 label.pack(pady=20)
 
-btn_randomizer = tk.Button(start_window, text="Meme Randomizer", font=("Alasassy Caps", 12), command=start_meme_randomizer)
+btn_randomizer = tk.Button(start_window, text="Meme Randomizer", font=("Alasassy Caps", 12), fg="white", bg="grey25",command=start_meme_randomizer)
 btn_randomizer.pack(pady=10)
 
 
@@ -180,9 +184,10 @@ class MemeGenerator:
         # Initialisiere das Hauptfenster des Programms und grundlegende Variablen
         self.root = root
         self.root.title("Meme Generator")
+        self.root.configure(bg="grey25")
 
         # Erstelle ein Canvas (Zeichenfläche), auf dem das Bild und Text angezeigt werden
-        self.canvas = tk.Canvas(root, width=800, height=600, bg="white")
+        self.canvas = tk.Canvas(root, width=800, height=600, bg="grey40")
         self.canvas.pack(fill=tk.BOTH, expand=True)
 
         # Variablen für das Bild, die Tkinter-kompatible Version und Textobjekte
@@ -193,7 +198,7 @@ class MemeGenerator:
         self.x, self.y = 400, 300  # Startkoordinaten für das Bild und den Text auf dem Canvas
 
         # Erstellen der Buttons im unteren Bereich des Fensters
-        self.button_frame = tk.Frame(root)
+        self.button_frame = tk.Frame(root, bg="grey25")
         self.button_frame.pack()
 
         # Button-Layout: Liste von Buttons mit jeweils einer Funktion, die aufgerufen wird
@@ -215,7 +220,7 @@ class MemeGenerator:
 
         # Buttons im Layout anordnen (4 Buttons pro Zeile)
         for i, (text, command) in enumerate(buttons):
-            btn = tk.Button(self.button_frame, text=text, command=command)
+            btn = tk.Button(self.button_frame, text=text, font=("Alasassy Caps", 12), fg="white", bg="grey25", command=command)
             btn.grid(row=i // 4, column=i % 4, padx=5, pady=5)
 
         # Emojis-Liste
@@ -273,7 +278,7 @@ class MemeGenerator:
                 self.canvas.itemconfig(self.current_text, text=new_text)  # Text auf Canvas aktualisieren
                 edit_window.destroy()  # Fenster schließen
 
-            tk.Button(edit_window, text="Speichern", command=update_text).pack()
+            tk.Button(edit_window, text="Speichern",font=("Alasassy Caps", 12), fg="white", bg="grey25", command=update_text).pack()
 
     def change_text_color(self):
         # Funktion, um die Schriftfarbe zu ändern
@@ -353,6 +358,7 @@ class MemeGenerator:
         # Funktion, um die Bildgröße anzupassen
         if self.img:
             resize_window = tk.Toplevel(self.root)  # Neues Fenster für die Größe
+            resize_window.configure(bg="grey25")
             resize_window.title("Bildgröße anpassen")
             width_label = tk.Label(resize_window, text="Breite:")
             width_label.pack()
@@ -375,7 +381,7 @@ class MemeGenerator:
                 except ValueError:
                     print("Ungültige Größe eingegeben")  # Fehlerbehandlung
 
-            tk.Button(resize_window, text="Größe anpassen", command=apply_resize).pack()
+            tk.Button(resize_window, text="Größe anpassen", font=("Alasassy Caps", 12), fg="white", bg="grey25", command=apply_resize).pack()
 
     def save_image(self):
         # Speichern des bearbeiteten Bildes
@@ -391,10 +397,11 @@ class MemeGenerator:
 def start_meme_generator():
     start_window.destroy()
     root = tk.Tk()  # Erstelle das Tkinter-Hauptfenster
+    root.configure(bg="grey25")
     app = MemeGenerator(root)  # Erstelle das Meme-Generator-Objekt
     root.mainloop()
 
-btn_generator = tk.Button(start_window, text="Meme Generator", font=("Alasassy Caps", 12), command=start_meme_generator)
+btn_generator = tk.Button(start_window, text="Meme Generator", font=("Alasassy Caps", 12),fg="white", bg="grey25", command=start_meme_generator)
 btn_generator.pack(pady=10)
 
 
