@@ -3,8 +3,9 @@ import random                       # für die zufällige Ausgabe der Memes
 import os                           # Interaktion mit dem Betriebssystem, in diesem Fall Zugriff auf die Dateien der Memes
 import tkinter as tk 
 from tkinter import filedialog, colorchooser, font# GUI für die grafische Benutzeroberfläche
-from PIL import Image, ImageTk      # Bibliothek für Bildverarbeitung; Image=Klasse für Bilder öffnen, bearbeiten und speichern; ImageTk=Schnittstelle zu Tkinter
+from PIL import Image, ImageTk, ImageOps      # Bibliothek für Bildverarbeitung; Image=Klasse für Bilder öffnen, bearbeiten und speichern; ImageTk=Schnittstelle zu Tkinter
 from tkinter import messagebox      # ermöglicht Pop-up Nachrichten
+import emoji
 
 # Dictionary mit Ordnern mit Memes nach Kategorie
 CATEGORIES = {
@@ -122,6 +123,7 @@ def start_meme_randomizer():
 
         meme_label.config(image=img)    # Tkinter Widget zur Bildverarbeitung
         meme_label.image = img          # Referenz speichern
+
     # Funktion die ein Meme zufällig auswählt
     def show_random_meme(category, subcategory=None):    
         if subcategory:
@@ -151,7 +153,6 @@ def start_meme_randomizer():
         back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command= show_categories)  # definiert den Zurück-Button
         back_btn.pack(side=tk.LEFT, padx=10, pady=5)   # bettet den Button im Tkinter-Fenster ein, mit automatischer Skallierung des Buttons; Abstand zu anderen Objekten 10 Pixel horizontal und 5 Pixel vertikal
 
-    
     back_btn = tk.Button(frame, text="← Zurück", font=("Alasassy Caps", 12), fg="white", bg="grey20", command=show_categories)   # erstellt den Zurück-Button
     back_btn.pack()
     # Label für das Bild
