@@ -143,9 +143,16 @@ def show_meme(meme_path):
     meme_label.config(image=img)    # Tkinter Widget zur Bildverarbeitung
     meme_label.image = img          # Referenz speichern
 
-# Frame-Widget erstellen
-frame = tk.Frame(root, background= "grey25")    # erstellt ein Frame-Widget im Hauptfenster mit grauem Hintergrund, das als Container für die Buttons dient
+# Frame-Widget mit Scroll-Leiste erstellen
+canvas = tk.Canvas(root)
+scrollbar = tk.Scrollbar(root,orient="vertical", command=canvas.yview)
+frame = tk.Frame(canvas, background= "grey25")    # erstellt ein Frame-Widget im Hauptfenster mit grauem Hintergrund, das als Container für die Buttons dient
 frame.pack()                        # bettet das Frame in das Fenster ein
+frame.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+canvas.create_window((0, 0), window=frame, anchor="nw")
+canvas.configure(yscrollcommand=scrollbar.set)
+canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
 
 # Label für das Bild
 meme_label = tk.Label(root)         # Erstellung eines Label-Widgets im Hauptfenster, wo das Meme drauf plaziert wird
