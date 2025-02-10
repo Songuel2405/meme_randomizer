@@ -29,6 +29,7 @@ CATEGORIES = {
 
 # Meme-Randomizer starten
 def start_meme_randomizer():
+    start_window.destroy()
     global root                                         
     root = tk.Tk()                                      # Hauptfenster
     root.title("Meme Randomizer")                       # gibt dem Fenster einen Titel
@@ -158,7 +159,6 @@ def start_meme_randomizer():
     show_categories()
 
     root.mainloop()                     # startet die Tkinter-Anwendung, Fenster bleibt geöffnet und reagiert auf Benutzerinteraktionen
-
 
 # Startfenster erstellen
 start_window = tk.Tk()
