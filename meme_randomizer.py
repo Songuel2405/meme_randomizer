@@ -236,11 +236,13 @@ class MemeGenerator:
             ":cat_face:", ":unicorn_face:", ":skull:"
         ]
         self.emoji_selection_window = None  # Fenster für die Emoji-Auswahl
+        self.history = [] # speichert die Zwischenschritte der Bildbearbeitung
 
     def upload_image(self):
         # Funktion, um ein Bild vom Computer hochzuladen
         file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.png;*.jpg;*.jpeg")])
         if file_path:
+            self.save_state()
             self.img = Image.open(file_path)  # Das ausgewählte Bild öffnen
             self.display_image()  # Bild auf der Canvas anzeigen
 
@@ -251,6 +253,7 @@ class MemeGenerator:
 
     def add_text(self):
         # Funktion, um Text auf das Bild hinzuzufügen
+        self.save_state()
         self.current_text = self.canvas.create_text(self.x, self.y, text="Text", fill="black", font=("Arial", 20), tags="editable")
         self.text_items.append(self.current_text)  # Speichern der Text-ID
 
@@ -288,12 +291,14 @@ class MemeGenerator:
 
     def change_text_color(self):
         # Funktion, um die Schriftfarbe zu ändern
+        self.save_state()
         color = colorchooser.askcolor()[1]  # Farbwahl für die Schrift
         if color and self.current_text:
             self.canvas.itemconfig(self.current_text, fill=color)  # Textfarbe ändern
 
     def change_background_color(self):
         # Funktion, um die Hintergrundfarbe des Texts zu ändern
+        self.save_state()
         color = colorchooser.askcolor()[1]  # Farbwahl für den Hintergrund
         if color and self.current_text:
             self.canvas.itemconfig(self.current_text, background=color)  # Hintergrundfarbe ändern
@@ -315,12 +320,14 @@ class MemeGenerator:
 
     def add_emoji(self, emoji_code):
         # Funktion, um das ausgewählte Emoji zum Bild hinzuzufügen
+        self.save_state()
         emoji_text = emoji.emojize(emoji_code)  # Emoji-Text
         self.current_text = self.canvas.create_text(self.x, self.y + 50, text=emoji_text, font=("Arial", 40), tags="editable")
         self.text_items.append(self.current_text)  # Speichern der Emoji-ID
 
     def add_border(self):
         # Funktion, um einen schwarzen Rahmen um das Bild hinzuzufügen
+        self.save_state()
         if self.img:
             self.img = ImageOps.expand(self.img, border=10, fill="black")  # Bild um 10 Pixel erweitern
             self.display_image()
@@ -345,6 +352,7 @@ class MemeGenerator:
 
     def crop_image(self):
         # Funktion, um das Bild zuzuschneiden (Beispielwerte)
+        self.save_state()
         if self.img:
             left = 100
             top = 100
@@ -356,6 +364,7 @@ class MemeGenerator:
 
     def rotate_image(self):
         # Funktion, um das Bild zu drehen (90 Grad)
+        self.save_state()
         if self.img:
             self.img = self.img.rotate(90, expand=True)  # Bild um 90 Grad drehen
             self.display_image()
@@ -396,9 +405,14 @@ class MemeGenerator:
             if file_path:
                 self.img.save(file_path)  # Bild speichern
 
+    def save_state(self):
+        if self.img:
+            self.history.append(self.img.copy())
+    # Rückgängig-Funktion, um die letzte Aktion rückgängig zu machen
     def undo(self):
-        # Rückgängig-Funktion, um die letzte Aktion rückgängig zu machen
-        pass
+        if self.history:
+            self.img = self.history.pop()
+            self.display_image()
     
 def start_meme_generator():
     start_window.destroy()      # Startfenster schließen
