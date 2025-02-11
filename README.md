@@ -1,3 +1,31 @@
+Anleitung zur Verwendung des Meme Randomizers
+
+Der Meme Randomizer wirft dir zufällig ein Meme zu deiner gewählten Kategorie aus und ermöglicht es nach Keywords in den Dateinamen zu suchen.
+
+1. Meme Randomizer starten
+
+•	Schritt 1: Starte das Programm.
+•	Schritt 2: Ein Startfenster wird angezeigt. Klicke auf den Button „Meme Randomizer“, um das Hauptfenster des Meme-Randomizers zu öffnen
+
+2. Meme Kategorie auswählen
+
+•   Schritt 1: Wähle eine Hauptkategorie aus zu dem Thema du ein zufälliges Meme sehen möchtest
+•   Schritt 2: Wähle (falls vorhanden) eine Unterkategorie aus
+•   Schritt 3: Erfreue dich an dem zufällig ausgewähltem Meme, passend zu deiner aktuellen Stimmung oder deinen Interessen
+
+3. Zurück zur Kategorienauswahl
+
+•   Schritt 1: Klicke auf den "Zurück"-Button
+•   Schritt 2: Suche dir eine neue Kategorie aus
+
+4. Suchfunktion
+
+•   Schritt 1: Schreibe den Suchbegriff in den weißen Balken auf der rechten Seite
+•   Schritt 2: Klicke auf den "Suchen"-Button
+•   Schritt 3: Stöbere, mit Klick auf die Dateinamen, durch alle Memes die deinen Suchbegriff im Dateinamen enthalten
+•   Schritt 4: Scrolle gegebenenfalls mit der Scroll-Leiste am rechten Bildschirmrand, falls zu viele Ergebnisse für eine Seite angezeigt werden
+•   Schritt 5: Nutze den "Zurück"-Button unter den Dateien um wieder zu den Kategorien zu gelangen
+
 Anleitung zur Verwendung des Meme Generators
 
 Der Meme Generator ermöglicht es dir, Memes zu erstellen, indem du Bilder hochlädst, Text hinzufügst, Emojis einfügst und Bilder bearbeitest. Hier ist eine Schritt-für-Schritt-Anleitung, wie du die Funktionen des Meme Generators nutzt:
@@ -16,7 +44,7 @@ Der Meme Generator ermöglicht es dir, Memes zu erstellen, indem du Bilder hochl
 5. Text hinzufügen
    
 •	Schritt 1: Klicke auf den Button „Text hinzufügen“.
-•	Schritt 2: Ein Textfeld erscheint auf dem Bild. Du kannst den Text anpassen, indem du die Schriftart, -farbe und -größe änderst.
+•	Schritt 2: Ein Textfeld erscheint auf dem Bild, indem du den Text, die Schriftgröße und Schriftfarbe definieren kannst.
 •	Schritt 3: Der Text kann mit der Maus verschoben werden. Klicke auf den Text und ziehe ihn an die gewünschte Position auf dem Bild.
 •	Schritt 4: Du kannst den Text später auch bearbeiten, indem du auf den Text klickst und die Funktion „Text bearbeiten“ verwendest.
 

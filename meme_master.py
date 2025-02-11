@@ -8,12 +8,13 @@ from PIL import Image, ImageTk, ImageOps, ImageDraw, ImageFont  # Bibliothek fü
 import emoji
 import sys
 
+# stellt sicher, dass alle Dateien gefunden werden können
 def get_resource_path(relative_path):
     """ Gibt den korrekten Pfad zurück, egal ob .py oder .exe """
-    if getattr(sys, 'frozen', False):  
-        base_path = sys._MEIPASS  # Falls als .exe ausgeführt
+    if getattr(sys, 'frozen', False):                           # Prüft, ob das Skript als .exe kompiliert wurde (z. B. mit PyInstaller).
+        base_path = sys._MEIPASS                                # Falls als .exe ausgeführt
     else:
-        base_path = os.path.abspath(".")  # Falls als .py ausgeführt
+        base_path = os.path.abspath(".")                        # Falls als .py ausgeführt
 
     return os.path.join(base_path, relative_path)
 
