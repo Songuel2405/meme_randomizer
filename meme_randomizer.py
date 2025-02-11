@@ -1,10 +1,10 @@
 # Imports
-import random                                       # für die zufällige Ausgabe der Memes
-import os                                           # Interaktion mit dem Betriebssystem, in diesem Fall Zugriff auf die Dateien der Memes
-import tkinter as tk                                # GUI Tool - graphical user interface
-from tkinter import filedialog, colorchooser, font  # Dateien öffnen+speichern - Farbwähler - Schriftart
-from tkinter import messagebox                      # ermöglicht Pop-up Nachrichten
-from PIL import Image, ImageTk, ImageOps            # Bibliothek für Bildverarbeitung; Image=Klasse für Bilder öffnen, bearbeiten und speichern; ImageTk=Schnittstelle zu Tkinter
+import random                                                   # für die zufällige Ausgabe der Memes
+import os                                                       # Interaktion mit dem Betriebssystem, in diesem Fall Zugriff auf die Dateien der Memes
+import tkinter as tk                                            # GUI Tool - graphical user interface
+from tkinter import filedialog, colorchooser, font              # Dateien öffnen+speichern - Farbwähler - Schriftart
+from tkinter import messagebox                                  # ermöglicht Pop-up Nachrichten
+from PIL import Image, ImageTk, ImageOps, ImageDraw, ImageFont  # Bibliothek für Bildverarbeitung; Image=Klasse für Bilder öffnen, bearbeiten und speichern; ImageTk=Schnittstelle zu Tkinter; Draw=Zeichnen; Font=Schriftart
 import emoji
 
 # Dictionary mit Ordnern mit Memes nach Kategorie
@@ -220,7 +220,6 @@ class MemeGenerator:
             ("Bildgröße anpassen", self.resize_image),
             ("Speichern", self.save_image),
             ("Rückgängig", self.undo),  # Rückgängig-Button
-            ("Schriftfarbe ändern", self.change_text_color),
             ("Hintergrundfarbe ändern", self.change_background_color)
         ]
 
@@ -248,22 +247,87 @@ class MemeGenerator:
 
     def display_image(self):
         # Funktion, um das Bild im Tkinter-kompatiblen Format anzuzeigen
-        self.tk_img = ImageTk.PhotoImage(self.img)
-        self.canvas.create_image(self.x, self.y, image=self.tk_img, anchor=tk.CENTER, tags="moveable_image")
+        if self.img:
+            self.tk_img = ImageTk.PhotoImage(self.img)
+            self.canvas.delete("all")                   # vorherige Elemente löschen
+            self.canvas.create_image(self.x, self.y, image=self.tk_img, anchor=tk.CENTER, tags="moveable_image")
+            self.canvas.update_idletasks()
 
     def add_text(self):
         # Funktion, um Text auf das Bild hinzuzufügen
-        self.save_state()
-        self.current_text = self.canvas.create_text(self.x, self.y, text="Text", fill="black", font=("Arial", 20), tags="editable")
-        self.text_items.append(self.current_text)  # Speichern der Text-ID
+        if not hasattr(self, "img"):
+            print("Kein Bild geladen!")
+            return
+        text_window = tk.Toplevel(self.root)    # Fenster für Texteingabe
+        text_window.title("Text hinzufügen")
 
+        tk.Label(text_window, text="Text eingeben:").pack()
+        text_entry = tk.Entry(text_window)
+        text_entry.pack()
+
+        tk.Label(text_window, text="Schriftgröße:").pack()
+        size_entry = tk.Entry(text_window)
+        size_entry.pack()
+
+        def choose_color(button):
+            color = colorchooser.askcolor()[1]
+            if color:
+                button.config(bg=color)
+                button.color = color
+
+        tk.Label(text_window, text="Textfarbe wählen:").pack()
+        color_button = tk.Button(text_window, text="Farbe wählen", command=lambda:choose_color(color_button))
+        color_button.pack()
+
+        def apply_text():
+            text = text_entry.get()
+            size = size_entry.get()
+            color = getattr(color_button, "color","white")
+
+            if not text:
+                print("Kein Text eingegeben!")
+                return
+
+            try:
+                size = int(size)
+            except ValueError:
+                print("Ungültige Schriftgröße!")
+                return
+
+            self.current_text = self.canvas.create_text(
+                self.x, self.y, text=text, font=("Arial",size), fill=color, tags="editable")
+            self.text_items.append(self.current_text)
+            self.save_state()   # Speichern für Undo func
+
+            draw = ImageDraw.Draw(self.img) # zeichnet direkt aufs Bild
+
+            try:
+                font = ImageFont.truetype("arial.ttf", size)
+            except:
+                font = ImageFont.load_default()
+            
+            bbox = draw.textbbox((0,0), text, font=font)
+            text_width, text_height = bbox[2] - bbox[0], bbox[3] - bbox[1]
+            img_width, img_height = self.img.size
+            x = (img_width - text_width) // 2
+            y = img_height - text_height - 20   # Abstand zum unteren Rand
+
+            draw.text((x,y), text, font=font, fill=color)
+
+            self.display_image()
+            self.img.save("meme_with_text.jpg")
+            text_window.destroy()
+            
+        tk.Button(text_window, text="Text hinzufügen", command=apply_text).pack()
+
+        if hasattr(self, "current_text") and self.current_text:
         # Text auswählbar und verschiebbar machen
-        self.canvas.tag_bind(self.current_text, "<Button-1>", self.select_text)  # Text auswählen
-        self.canvas.tag_bind(self.current_text, "<B1-Motion>", self.move_text)  # Text mit der Maus bewegen
+            self.canvas.tag_bind(self.current_text, "<Button-1>", lambda event: self.select_text(event))  # Text auswählen
+            self.canvas.tag_bind(self.current_text, "<B1-Motion>", lambda event: self.move_text(event))  # Text mit der Maus bewegen
 
     def select_text(self, event):
         # Funktion zum Auswählen und Bearbeiten des Textes
-        self.current_text = event.widget.find_closest(event.x, event.y)[0]  # Nähesten Text-Objekt finden
+        self.current_text = event.canvas.find_closest(event.x, event.y)[0]  # Nähesten Text-Objekt finden
         self.edit_text()  # Text bearbeiten
 
     def move_text(self, event):
@@ -271,30 +335,25 @@ class MemeGenerator:
         new_x = event.x
         new_y = event.y
         self.canvas.coords(self.current_text, new_x, new_y)  # Textposition auf der Canvas aktualisieren
-        self.x, self.y = new_x, new_y  # Koordinaten für den Text speichern
 
     def edit_text(self):
         # Funktion, um den ausgewählten Text zu bearbeiten
         if self.current_text:
             edit_window = tk.Toplevel(self.root)  # Neues Fenster für Textbearbeitung
             edit_window.title("Text bearbeiten")
+            current_text = self.canvas.itemcget(self.current_text, "text")
             entry = tk.Entry(edit_window)  # Eingabefeld für neuen Text
             entry.pack()
+            entry.insert(0, current_text)
 
             # Funktion zum Speichern des neuen Textes
             def update_text():
                 new_text = entry.get()  # Neuer Text aus dem Eingabefeld
-                self.canvas.itemconfig(self.current_text, text=new_text)  # Text auf Canvas aktualisieren
+                if new_text:
+                    self.canvas.itemconfig(self.current_text, text=new_text)  # Text auf Canvas aktualisieren
                 edit_window.destroy()  # Fenster schließen
 
             tk.Button(edit_window, text="Speichern",font=("Alasassy Caps", 12), fg="white", bg="grey25", command=update_text).pack()
-
-    def change_text_color(self):
-        # Funktion, um die Schriftfarbe zu ändern
-        self.save_state()
-        color = colorchooser.askcolor()[1]  # Farbwahl für die Schrift
-        if color and self.current_text:
-            self.canvas.itemconfig(self.current_text, fill=color)  # Textfarbe ändern
 
     def change_background_color(self):
         # Funktion, um die Hintergrundfarbe des Texts zu ändern
@@ -400,10 +459,14 @@ class MemeGenerator:
 
     def save_image(self):
         # Speichern des bearbeiteten Bildes
-        if self.img:
-            file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg")])
-            if file_path:
-                self.img.save(file_path)  # Bild speichern
+        if not hasattr(self, "img"):
+            print("Kein Meme vorhanden!")
+            return
+
+        file_path = filedialog.asksaveasfilename(defaultextension=".png", filetypes=[("PNG files", "*.png"), ("JPEG files", "*.jpg")])
+        if file_path:
+            self.img.save(file_path)  # Bild speichern
+            print("Meme gespeichert")
 
     def save_state(self):
         if self.img:
